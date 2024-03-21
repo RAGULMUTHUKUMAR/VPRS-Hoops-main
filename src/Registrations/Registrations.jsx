@@ -55,10 +55,10 @@ function Registrations() {
     }
 
 
-    
+    
 
-   
-  };
+   
+  };
 
   return (
     <div className="bg-black ">
