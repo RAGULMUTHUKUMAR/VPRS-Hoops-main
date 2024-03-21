@@ -1,0 +1,31 @@
+@import url('https://fonts.googleapis.com/css2?family=Mukta:wght@200;300;400;500;600;700;800&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body{
+    font-family: "Mukta", sans-serif;
+}
+
+::selection{
+  background-color: #ff4c00;
+  color: black;
+}
+
+@keyframes wiggle {
+    0% {
+      margin-left: 0px;
+    }
+    50%{
+        margin-left: 50%;
+    }
+    100% {
+     margin-left: 0px;
+    }
+  }
+  
+  .animate-wiggle {
+    animation: wiggle 4s ease-in-out infinite;
+  }
+  
