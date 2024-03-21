@@ -6,7 +6,9 @@ import { FaArrowLeft } from "react-icons/fa6";
 import { useNavigate } from "react-router-dom";
 function Registrations() {
   const form = useRef();
- 
+
+  const [successMessage, setSuccessMessage] = useState(null);
+
   var navigate = useNavigate()
   const sendEmail = (e) => {
     e.preventDefault();
@@ -30,10 +32,12 @@ function Registrations() {
           () => {
             console.log("SUCCESS!");
             toast.success("Your Application Successfully Submitted");
+            setSuccessMessage("Thank you for your interest in the VPRS Hoops Academy Foundation Free Summer Camp! We look forward to welcoming you to our camp and sharing our love for basketball with you. If you have any questions or need further assistance, please don't hesitate to contact us.  Let's make this summer unforgettable on court!");
           },
           (error) => {
             console.log("FAILED...", error.text);
             toast.error("Please Check Your Application");
+           
           }
         );
     } else {
@@ -219,9 +223,11 @@ function Registrations() {
             />
           </div>
         </section>
-        <div className="flex items-center justify-center mt-[50px]"><button className="bg-[#FF0000] hover:bg-[#ffff] hover:text-[#FF0000] text-2xl font-black rounded-[8px] text-[#ffff] w-[200px] p-[10px]">
+        <div className="flex flex-col gap-10 items-center justify-center mt-[50px]">
+          <button className="bg-[#FF0000] hover:bg-[#ffff] hover:text-[#FF0000] text-2xl font-black rounded-[8px] text-[#ffff] w-[200px] p-[10px]">
             <input type="submit" value="Send" />
           </button>
+            {successMessage && <p className="text-green-500 w-[70%] text-[12px] text-justify xl:w-[50%] xl:text-[15px]">{successMessage}</p>}
           </div>
         </form>
 
@@ -244,8 +250,8 @@ function Registrations() {
             conduct myself in a respectful and sportsmanlike manner at all
             times.
           </p>
-          <p className="text-[#FF0000] text-[10px] text-center p-[20px] md:text-[10px] md:p-0">
-          Let's make this summer unforgettable on the court!
+          <p className="text-[#FF0000] text-[10px] text-center p-[10px] md:text-[10px] md:p-0">
+      
         </p>
        
         
