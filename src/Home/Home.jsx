@@ -1,129 +1,204 @@
 import React from "react";
-import video from "../assets/intro.mp4";
-import basketball from "../assets/basket-png.png";
-import { FaBiohazard } from "react-icons/fa6";
-import { MdGroups } from "react-icons/md";
-// import { FaBasketball } from "react-icons/fa6";
-import { FaGoogleWallet } from "react-icons/fa6";
-import "./Home.css";
+import { FaArrowDown } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
+import useScrollReveal from "../useScrollReveal";
+import "./Home.css";
+import introVideo from "../assets/intro.mp4";
+
+const heroMetrics = [
+  { value: "05+", label: "Athletes Coached" },
+  { value: "15", label: "Championship Titles" },
+  { value: "10+", label: "Years of Experience" },
+];
+
+const heroHighlights = [
+  "Structured on-court skill progression",
+  "Game-IQ training with live pressure reps",
+  "Mentorship that builds leadership and discipline",
+];
 
 function Home({ home }) {
-  var navigate = useNavigate()
+  const navigate = useNavigate();
+  const sectionRef = useScrollReveal();
+
+  const scrollToAbout = () => {
+    const aboutSection = document.getElementById("about");
+    if (aboutSection) {
+      aboutSection.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  };
+
   return (
-    <div className=" w-full bgvideo" id="home" ref={home}>
-      <div className="w-full h-[600px] md:h-screen ">
-        <div className="intro absolute w-full z-[2] flex flex-col mt-[65px]  md:mt-[20px] lg:mt-[100px] ">
-          <h1 className="text-white text-[30px] font-[900] pl-2 mt-[10px] md:text-[50px] md:mt-[50px] lg:text-[65px] xl:mt-[110px] xl:pl-[25px]">
-            Welcome To <span className="text-[#FF4C00]"> VPRS Hoops</span>
-          </h1>
-          <h1 className="text-white text-[25px] pl-2 font-black md:text-[45px] xl:pl-[25px] lg:text-[55px]">
-            Academy Foundation <span className="text-[#FF4C00]">!</span>
-          </h1>
-          <p className=" text-white text-[15px] text-start font-semibold pl-2 pt-4 md:w-[70%] md:text-[20px] md:font-[500] lg:w-[65%] lg:text-[20px] xl:w-[56%] xl:pl-[25px] xl:text-[20px]">
-            Welcome to VPRS Hoops Academy Foundation, where dreams take flight
-            on the wings of basketball! We are a non-profit organization
-            dedicated to empowering young basketball players to excel in the
-            game and beyond. Join us on our journey to unlock the full potential
-            of aspiring athletes and pave the way for a brighter future through
-            the power of basketball.
-          </p>
+    <section
+      id="home"
+      ref={home}
+      className="relative overflow-hidden bg-dark-bg"
+    >
+      {/* ── BACKGROUND VIDEO ── */}
+      <video
+        autoPlay
+        muted
+        loop
+        playsInline
+        className="hero-video absolute inset-0 h-full w-full object-cover"
+        style={{ zIndex: 0 }}
+      >
+        <source src={introVideo} type="video/mp4" />
+      </video>
 
-          {/*------------------------- Animated basketball------------------------------ */}
+      {/* ── OVERLAYS ── */}
+      <div
+        className="absolute inset-0"
+        style={{
+          zIndex: 1,
+          background:
+            "linear-gradient(to bottom, rgba(6,6,6,0.72) 0%, rgba(8,8,8,0.56) 42%, rgba(10,10,10,0.94) 100%)",
+        }}
+      />
 
-          <div className="w-[170px] h-[70px] md:w-[220px] md:h-[90px] md:ml-[520px] md:bottom-[140px] lg:bottom-[150px] lg:w-[300px] lg:h-[120px] lg:ml-[710px] lg:rounded-[100px] xl:ml-[75%] mt-[50px] ml-[110px] rounded-[50px] overflow-hidden bg-[#FF4C00] flex relative shadow-[#FF4C00] shadow-2xl">
-            <div className="absolute left-0 top-0 flex justify-center items-center w-[50%] h-[100%] z-10  animate-wiggle">
-              <img
-                className="bg-[#FF4C00] rounded-[100px]"
-                src={basketball}
-                alt="basketball-png "
-              />
-            </div>
-            <button
-            onClick={()=>{navigate("/registration")}}
-              type="submit"
-              className="w-[50%] relative left-0 top-0 p-1 text-center text-[13px] font-black border-none hover:text-white text-[#221014] pl-[9px] md:text-2xl md:font-extrabold lg:text-3xl lg: lg:ml-[20px] "
-            >
-              Join Us
-            </button>
-            <div className=" relative right-0 top-0 ml-[22px] mt-3  w-[50%]">
-              <p className="text-[7px] font-bold text-[#ffff] p-2 md:text-[11px] md:p-1 md:font-semibold lg:text-[15px] lg:p-2 lg:font-semibold ">
-                Be Played By People Of All Ages And All Abilities
-              </p>
-            </div>
-          </div>
-          {/* ------------------------ Services icons -------------------------------- */}
+      {/* red centre glow on top of dark overlay */}
+      <div
+        className="absolute inset-0"
+        style={{
+          zIndex: 2,
+          background:
+            "radial-gradient(ellipse at 50% 55%, rgba(192,57,43,0.18) 0%, rgba(12,12,12,0.28) 58%, transparent 78%)",
+        }}
+      />
 
-          <div className=" pt-[50px] h-[160px] flex items-center justify-center gap-[55px] md:p-0 md:hidden md:justify-around">
-            <div className="flex flex-col items-center justify-center gap-3">
-              <div className="bg-[#221014] w-[50px] h-[50px] rounded-[50px] md:w-[80px] md:h-[80px] lg:w-[100px] lg:h-[100px]  flex items-center justify-center border-[3px] border-[#ff4c00]">
-                <FaBiohazard className="text-4xl text-[#FF4C00] " />
-              </div>
-              <p className="font-semibold text-white md:text-[#ff4c00] md:text-xl md:font-bold">
-                Proficiency
-              </p>
-            </div>
-            <div className="flex flex-col items-center justify-center gap-3">
-              <div className="bg-[#221014] w-[50px] h-[50px] rounded-[50px] md:w-[80px] md:h-[80px] lg:w-[100px] lg:h-[100px]  flex items-center justify-center border-[3px] border-[#ff4c00]">
-                <MdGroups className="text-4xl text-[#FF4C00] " />
-              </div>
-              <p className="font-semibold text-white md:text-[#ff4c00] md:text-xl md:font-bold">
-                Team Work
-              </p>
-            </div>
-            {/* <FaBasketball /> */}
-            <div className="flex flex-col items-center justify-center gap-3">
-              <div className="bg-[#221014] w-[50px] h-[50px] rounded-[50px] md:w-[80px] md:h-[80px] lg:w-[100px] lg:h-[100px]  flex items-center justify-center border-[3px] border-[#ff4c00]">
-                <FaGoogleWallet className="text-4xl text-[#FF4C00] " />
-              </div>
-              <p className="font-semibold text-white md:text-[#ff4c00] md:text-xl md:font-bold">
-                Participation
-              </p>
-            </div>
-          </div>
-        </div>
-
-        {/* ----------------------------- Background video --------------------------------- */}
-
-        <div className="absolute bg-black w-full h-[600px] md:h-screen opacity-80 z-[1]   "></div>
-        <video
-          src={video}
-          autoPlay
-          loop
-          muted
-          className="object-cover w-full h-full z-[-1]"
+      {/* ── CONTENT ── */}
+      <div
+        ref={sectionRef}
+        className="relative flex min-h-screen flex-col items-center
+                   justify-center px-4 pb-24 pt-32 text-center
+                   sm:px-8 lg:px-16 xl:px-32"
+        style={{ zIndex: 3 }}
+      >
+        {/* floating orb */}
+        <div
+          className="hero-orb absolute left-1/2 top-1/2 h-64 w-64
+                        -translate-x-1/2 -translate-y-1/2 rounded-full
+                        bg-red-700/20 blur-[120px] pointer-events-none
+                        sm:h-80 sm:w-80 lg:h-[28rem] lg:w-[28rem]"
+          style={{ zIndex: 0 }}
         />
-      </div>
-      <div className="hidden md:block ">
-        <div className=" pt-5 h-[200px] flex items-center justify-center gap-[55px] md:p-0 md:bg-black  md:justify-around">
-          <div className="flex flex-col items-center justify-center gap-3">
-            <div className="bg-[#221014] w-[50px] h-[50px] rounded-[50px] md:w-[80px] md:h-[80px] lg:w-[100px] lg:h-[100px]  flex items-center justify-center border-[3px] border-[#ff4c00]">
-              <FaBiohazard className="text-4xl text-[#FF4C00] " />
-            </div>
-            <p className="font-semibold text-white md:text-[#ff4c00] md:text-xl md:font-bold">
-              Proficiency
+
+        <div className="relative z-10 mx-auto grid w-full max-w-7xl gap-10 lg:grid-cols-[1.05fr_0.95fr] lg:items-center">
+          <div className="lg:pr-8 lg:text-left">
+            <p
+              data-reveal
+              className="hero-kicker mb-4 text-xs font-semibold uppercase
+                        tracking-[0.42em] text-red-300 sm:text-sm lg:text-left"
+            >
+              VPRS Hoops Academy · Skill. Speed. Standards.
             </p>
+
+            <div
+              className="space-y-1 font-display uppercase leading-none
+                          text-white drop-shadow-[0_4px_24px_rgba(0,0,0,0.7)]"
+            >
+              {["PLAY FASTER", "THINK SHARPER", "LEAD STRONGER"].map(
+                (word, index) => (
+                  <div
+                    key={word}
+                    data-reveal
+                    className="hero-title tracking-[0.06em]"
+                    style={{
+                      fontSize: "clamp(50px, 9.4vw, 108px)",
+                      animationDelay: `${index * 120}ms`,
+                    }}
+                  >
+                    {word}
+                  </div>
+                ),
+              )}
+            </div>
+
+            <p
+              data-reveal
+              className="hero-balance hero-subtitle mx-auto mt-6 max-w-2xl text-base
+                        leading-7 text-gray-200 sm:text-lg
+                        drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)] lg:mx-0"
+            >
+              Elite basketball development for ambitious athletes. Master
+              cleaner footwork, faster reads, better shot selection, and the
+              composure to take over in game-defining moments.
+            </p>
+
+            <div
+              data-reveal
+              className="mt-8 flex flex-col items-center
+                          gap-4 sm:flex-row sm:justify-center lg:justify-start"
+            >
+              <button
+                type="button"
+                onClick={() => navigate("/registration")}
+                className="min-h-[44px] rounded-lg bg-red-700 px-8 py-3
+                         text-white font-semibold transition-transform
+                         duration-300 hover:scale-105 hover:bg-red-800
+                         shadow-[0_4px_24px_rgba(192,57,43,0.5)]"
+              >
+                Reserve Your Spot
+              </button>
+              <button
+                type="button"
+                onClick={scrollToAbout}
+                className="glass-card min-h-[44px] rounded-lg
+                         border border-white/20 px-8 py-3 font-semibold
+                         text-white transition hover:bg-white/10"
+              >
+                Explore Programs
+              </button>
+            </div>
           </div>
-          <div className="flex flex-col items-center justify-center gap-3">
-            <div className="bg-[#221014] w-[50px] h-[50px] rounded-[50px] md:w-[80px] md:h-[80px] lg:w-[100px] lg:h-[100px]  flex items-center justify-center border-[3px] border-[#ff4c00]">
-              <MdGroups className="text-4xl text-[#FF4C00] " />
+
+          <div
+            data-reveal
+            className="hero-panel glass-card rounded-2xl p-6 text-left sm:p-7"
+          >
+            <p className="hero-panel-label">Performance Outcomes</p>
+            <h3 className="hero-panel-title">Built For Real Match Impact</h3>
+
+            <div className="mt-6 grid grid-cols-3 gap-3">
+              {heroMetrics.map((metric) => (
+                <div
+                  key={metric.label}
+                  className="hero-metric rounded-xl border border-white/10 bg-black/25 p-3"
+                >
+                  <div className="font-display text-4xl uppercase leading-none text-red-400">
+                    {metric.value}
+                  </div>
+                  <p className="mt-2 text-xs font-semibold uppercase tracking-[0.14em] text-gray-200">
+                    {metric.label}
+                  </p>
+                </div>
+              ))}
             </div>
-            <p className="font-semibold text-white md:text-[#ff4c00] md:text-xl md:font-bold">
-              Team Work
-            </p>
-          </div>
-          {/* <FaBasketball /> */}
-          <div className="flex flex-col items-center justify-center gap-3">
-            <div className="bg-[#221014] w-[50px] h-[50px] rounded-[50px] md:w-[80px] md:h-[80px] lg:w-[100px] lg:h-[100px]  flex items-center justify-center border-[3px] border-[#ff4c00]">
-              <FaGoogleWallet className="text-4xl text-[#FF4C00] " />
-            </div>
-            <p className="font-semibold text-white md:text-[#ff4c00] md:text-xl md:font-bold">
-              Participation
-            </p>
+
+            <ul className="mt-6 space-y-3">
+              {heroHighlights.map((highlight) => (
+                <li
+                  key={highlight}
+                  className="hero-highlight-item flex items-start gap-3"
+                >
+                  <span className="hero-dot mt-[9px]" aria-hidden="true" />
+                  <span className="text-sm leading-6 text-gray-100 sm:text-base">
+                    {highlight}
+                  </span>
+                </li>
+              ))}
+            </ul>
           </div>
         </div>
+
+        <div
+          className="absolute bottom-8 left-1/2
+                        -translate-x-1/2 text-white/60"
+        >
+          <FaArrowDown className="animate-bounce text-2xl" />
+        </div>
       </div>
-    </div>
+    </section>
   );
 }
 

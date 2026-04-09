@@ -1,75 +1,82 @@
 import React from "react";
-import logo from "../assets/academy-logo.png";
-import { IoIosMail } from "react-icons/io";
-import { GrInstagram } from "react-icons/gr";
-import { FaXTwitter } from "react-icons/fa6";
-import { FaFacebook } from "react-icons/fa";
-import { FaAngleDoubleRight } from "react-icons/fa";
+import { FaFacebookF, FaInstagram, FaYoutube } from "react-icons/fa";
+
+const navLinks = [
+  { href: "#home", label: "Home" },
+  { href: "#about", label: "About" },
+  { href: "#programs", label: "Programs" },
+  { href: "#team", label: "Team" },
+  { href: "#founder", label: "Founder" },
+  { href: "#contact", label: "Contact" },
+];
+
+const socialLinks = [
+  { href: "https://instagram.com", label: "Instagram", icon: FaInstagram },
+  { href: "https://youtube.com", label: "YouTube", icon: FaYoutube },
+  { href: "https://facebook.com", label: "Facebook", icon: FaFacebookF },
+];
 
 function Footer() {
   return (
-    <div className="w-full  bg-[#000000]">
-      <div className="md:bg-[#FF4C00] md:w-[100%] md:flex md:justify-around md:gap-[20px] md:items-center md:h-[250px] ">
-        <div className="md:w-[30%] md:flex md:flex-col  md:items-center md:justify-center md:">
-          <img
-            className="w-[300px] ml-[30px] text-center md:ml-0 md:w-[200px]"
-            src={logo}
-            alt="Academy logo"
-          />
-          <h1 className="text-[#FF0000] text-[23px] font-[900] text-center md:text-[13px] md:font-[800] md:text-black md:mb-[100px]">
-            JOIN THE{" "}
-            <span className="text-white  text-[23px] font-[900]  md:text-[13px] md:font-[800] "> ONES </span>{" "}
-            COMMUNITY
-          </h1>
-        </div>
-        <div className="pt-[30px] md:w-[30%]">
-          <h1 className=" hidden md:block text-start ml-[20px] text-[25px] font-[900]">Quick Link</h1>
-          <ul className="flex flex-col items-start justify-center gap-[2px] md:gap-0 p-[20px]">
-            <li className="text-[20px] text-white font-[100] flex items-center gap-2 md:text-[20px] md:font-[600] md:text-black">
-              <span><FaAngleDoubleRight className="text-[12px] hover:text-white font-thin"/></span><a className="hover:text-white" href="/">Home</a>
-            </li>
-            <li className="text-[20px] text-white font-[100] flex items-center gap-2 md:text-[20px] md:font-[600] md:text-black">
-              <span><FaAngleDoubleRight className="text-[12px] hover:text-white font-thin"/></span><a className="hover:text-white" href="#about">About Us</a>
-            </li>
-            <li className="text-[20px] text-white font-[100] flex items-center gap-2 md:text-[20px] md:font-[600] md:text-black">
-              <span><FaAngleDoubleRight className="text-[12px] hover:text-white font-thin"/></span><a className="hover:text-white" href="#contact">Registration</a>
-            </li>
-            <li className="text-[20px] text-white font-[100] flex items-center gap-2 md:text-[20px] md:font-[600] md:text-black">
-              <span><FaAngleDoubleRight className="text-[12px] hover:text-white font-thin"/></span><a className="hover:text-white" href="#founder">Our Founder</a>
-            </li>
-            <li className="text-[20px] text-white font-[100] flex items-center gap-2 md:text-[20px] md:font-[600] md:text-black">
-              <span><FaAngleDoubleRight className="text-[12px] hover:text-white font-thin"/></span><a className="hover:text-white">Contact Us</a>
-            </li>
-          </ul>
-        </div>
-        <div className="p-[20px] md:w-[40%]">
-          <h1 className="text-[#FF0000] text-[23px] font-[900] pb-[10px] md:text-black lg:ml-[45px] lg:font-[900]">
-            NEWS LETTER
-          </h1>
-          <div className="w-full flex items-Start justify-center">
-          <input
-            className="w-[65%] h-[45px] p-[5px] bg-[#e0989868] text-white  rounded-[1px] bg-opacity-5 md:w-[60%] md:bg-black md:p-[10px]"
-            type="text"
-            placeholder="Enter Your Email"
-          />
-          
-            <button className="bg-[#FF0000] hover:bg-[#ffff] hover:text-[#FF0000] text-xl font-semibold rounded-[1px] text-[#ffff] w-[100px] h-[45px] md:bg-white md:text-[#FF0000] lg:h-[45px] md:font-black">
-              SEND
-            </button>
+    <footer className="bg-[#060606] px-4 py-12 sm:px-8 lg:px-16 xl:px-32">
+      <div className="mx-auto max-w-7xl border-t border-white/5 pt-12">
+        <div className="grid gap-10 md:grid-cols-2 lg:grid-cols-3">
+          <div>
+            <div className="font-display text-6xl tracking-[0.12em] text-red-600">
+              VPRS
+            </div>
+            <div className="mt-1 text-xs font-semibold uppercase tracking-[0.4em] text-white">
+              HOOPS ACADEMY
+            </div>
+            <p className="section-body mt-5 max-w-sm text-base leading-7 text-gray-400">
+              Basketball development for athletes who want sharper skills,
+              stronger habits, and a competitive edge.
+            </p>
           </div>
-          
-         
+
+          <div>
+            <h3 className="font-display text-3xl uppercase tracking-[0.04em] text-white">
+              Navigation
+            </h3>
+            <div className="mt-5 grid grid-cols-2 gap-3">
+              {navLinks.map((link) => (
+                <a
+                  key={link.label}
+                  href={link.href}
+                  className="min-h-[44px] text-sm uppercase tracking-[0.18em] text-gray-400 transition hover:text-red-500"
+                >
+                  {link.label}
+                </a>
+              ))}
+            </div>
+          </div>
+
+          <div>
+            <h3 className="font-display text-3xl uppercase tracking-[0.04em] text-white">
+              Stay Connected
+            </h3>
+            <div className="mt-5 flex flex-wrap gap-3">
+              {socialLinks.map(({ href, label, icon: Icon }) => (
+                <a
+                  key={label}
+                  href={href}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="glass-card inline-flex min-h-[44px] items-center gap-2 rounded-full px-4 py-2 text-sm font-medium text-white transition hover:bg-red-700"
+                >
+                  <Icon />
+                  {label}
+                </a>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        <div className="mt-10 border-t border-white/5 pt-6 text-sm text-gray-600">
+          © 2026 VPRS Hoops Academy. All rights reserved.
         </div>
       </div>
-      <div className="flex gap-[10px] p-[10px] md:items-center md:justify-center md:gap-[30px]">
-        <IoIosMail className="text-[#ff000082] text-[30px] md:text-[19px]" />
-        <GrInstagram className="text-[#ff000082] text-[25px] md:text-[15px]" />
-        <FaXTwitter className="text-[#ff000082] text-[25px] md:text-[15px]" />
-        <FaFacebook className="text-[#ff000082] text-[25px] md:text-[15px]" />
-      </div>
-      <p className="w-full h-[1px] bg-[#ff0000a2]"></p>
-      <div> c</div>
-    </div>
+    </footer>
   );
 }
 

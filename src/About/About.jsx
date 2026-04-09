@@ -1,41 +1,132 @@
-import aboutimg from "../assets/3.jpg";
-function About({ About }) {
+import React, { useEffect, useMemo, useRef, useState } from "react";
+import { FaAward, FaBasketballBall, FaUsers } from "react-icons/fa";
+import useScrollReveal from "../useScrollReveal";
+
+const stats = [
+  { value: 500, suffix: "+", label: "Athletes", icon: FaUsers },
+  { value: 10, suffix: "+", label: "Years", icon: FaBasketballBall },
+  { value: 15, suffix: "+", label: "Titles", icon: FaAward },
+];
+
+function StatCard({ value, suffix, label, icon: Icon, startCounting }) {
+  const [count, setCount] = useState(0);
+
+  useEffect(() => {
+    if (!startCounting) {
+      return undefined;
+    }
+
+    let frameId;
+    const duration = 1400;
+    const start = performance.now();
+
+    const animate = (time) => {
+      const progress = Math.min((time - start) / duration, 1);
+      setCount(Math.floor(progress * value));
+
+      if (progress < 1) {
+        frameId = requestAnimationFrame(animate);
+      }
+    };
+
+    frameId = requestAnimationFrame(animate);
+
+    return () => cancelAnimationFrame(frameId);
+  }, [startCounting, value]);
+
   return (
-    <div className=" w-full  bg-black ]" id="about" ref={About}>
-      <h1
-        data-aos="fade-down-right"
-        data-aos-duration="600"
-        data-aos-easing="linear"
-        className="text-white pl-[10px] pt-[10px] text-[35px] font-[700] font-sans md:pb-[30px] lg:text-[40px] lg:pb-[35px] "
-      >
-        <span className="text-[#ff4c00]">A</span>bout
-      </h1>
-      <div className=" pl-5 pt-[10px] flex justify-around items-center gap-[30px]  lg:flex-row lg:justify-around">
-        <div
-          data-aos="zoom-in-up"
-          data-aos-duration="600"
-          data-aos-easing="linear"
-          className="w-[35%] h-[180px] md:w-[40%] md:h-[350px] lg:w-[25%] xl:h-[450px]"
-        >
-          <img
-            className="w-full object-cover md:object-cover  h-full"
-            src={aboutimg}
-            alt="About img"
-          />
-        </div>
-        <div className="w-[65%]  text-balance text-white font-[500]  ">
-          <p className="text-[10px] font-[500] text-justify pr-[15px] pb-[10px] md:text-[22px] lg:text-[25px] xl:font-[300] xl:text-[34px]">
-            At VPRS Hoops Academy Foundation, we believe in the transformative
-            power of basketball. Founded by Nagaarjun, a passionate basketball
-            player and advocate for sports development,<span className="text-[#ff4c00]"> our academy aims to
-            provide quality basketball training and coaching</span> to aspiring players
-            in our community. With a strong emphasis on skill development,
-            character building, and academic excellence, we strive to create a
-            supportive and inclusive environment where every player can thrive.
-          </p>
-        </div>
+    <article
+      data-reveal
+      className="glass-card rounded-2xl p-6 text-left transition duration-300 hover:-translate-y-2 hover:shadow-card-hover"
+    >
+      <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-red-700/15 text-red-500">
+        <Icon className="text-xl" />
       </div>
-    </div>
+      <div className="text-5xl font-bold text-red-500">
+        {count}
+        {suffix}
+      </div>
+      <p className="mt-2 text-base font-medium uppercase tracking-[0.16em] text-gray-200">
+        {label}
+      </p>
+    </article>
   );
 }
+
+function About() {
+  const sectionRef = useScrollReveal();
+  const statsRef = useRef(null);
+  const [startCounting, setStartCounting] = useState(false);
+
+  useEffect(() => {
+    const element = statsRef.current;
+
+    if (!element) {
+      return undefined;
+    }
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setStartCounting(true);
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.3 },
+    );
+
+    observer.observe(element);
+    return () => observer.disconnect();
+  }, []);
+
+  const statCards = useMemo(
+    () =>
+      stats.map((stat) => (
+        <StatCard key={stat.label} {...stat} startCounting={startCounting} />
+      )),
+    [startCounting],
+  );
+
+  return (
+    <section
+      id="about"
+      ref={sectionRef}
+      className="bg-dark-surface px-4 py-16 sm:px-8 lg:px-16 lg:py-24 xl:px-32"
+    >
+      <div className="mx-auto max-w-7xl grid gap-10 lg:grid-cols-[1fr_0.95fr] lg:items-center">
+        <div className="max-w-2xl">
+          <p data-reveal className="section-kicker">
+            About VPRS Hoops
+          </p>
+          <h2
+            data-reveal
+            className="section-title border-l-4 border-red-600 pl-4"
+          >
+            Building complete athletes through elite reps and relentless
+            standards.
+          </h2>
+          <p data-reveal className="section-body mt-6">
+            VPRS Hoops Academy is for players who want more than casual
+            sessions. Every week blends technical skill work, live competition,
+            strength habits, and performance mindset coaching designed for
+            match-day pressure.
+          </p>
+          <p data-reveal className="section-body mt-4 text-text-muted">
+            We meet athletes at their current level, then push forward with
+            structure, accountability, and a team culture that celebrates
+            discipline.
+          </p>
+        </div>
+
+        <div
+          ref={statsRef}
+          className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-3"
+        >
+          {statCards}
+        </div>
+      </div>
+    </section>
+  );
+}
+
 export default About;

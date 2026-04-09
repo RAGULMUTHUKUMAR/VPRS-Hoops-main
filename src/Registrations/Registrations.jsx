@@ -1,265 +1,151 @@
-import React from "react";
-import { useRef, useState } from 'react';
-import { toast } from "react-toastify";
-import emailjs from '@emailjs/browser';
+import React, { useRef, useState } from "react";
+import emailjs from "@emailjs/browser";
 import { FaArrowLeft } from "react-icons/fa6";
+import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
+
+const inputClass =
+  "w-full rounded-lg border border-white/10 bg-[#1A1A1A] px-4 py-3 text-white focus:border-red-500 focus:outline-none";
+
 function Registrations() {
-  const form = useRef();
+  const form = useRef(null);
+  const navigate = useNavigate();
+  const [successMessage, setSuccessMessage] = useState("");
 
-  const [successMessage, setSuccessMessage] = useState(null);
+  const submitForm = async (event) => {
+    event.preventDefault();
 
-  var navigate = useNavigate()
-  const sendEmail = (e) => {
-    e.preventDefault();
+    const data = new FormData(form.current);
+    const requiredFields = [
+      "full_name",
+      "age",
+      "phone",
+      "email",
+      "program",
+      "message",
+    ];
+    const hasEmptyField = requiredFields.some(
+      (field) => !String(data.get(field) || "").trim(),
+    );
 
-    const requiredFields = ['user_Namee', 'user_Agee', 'user_Datee', 'user_Parentt', 'user_contact', 'user_Add', 'user_emery', 'user_session', 'user_tshirt', 'user_exp', 'user_last'];
-    let isValid = true;
-    
-    requiredFields.forEach(field => {
-      const input = form.current.elements[field];
-      if (!input.value.trim()) {
-        isValid = false;
-        toast.error("Please check all the inputs.");
-      }
-    });
-    
-    if (isValid) {
-      emailjs.sendForm('service_yxy3o2s', 'template_u5z7jpl', form.current, {
-          publicKey: 'pw1QIwo54-lpt4IZe',
-        })
-        .then(
-          () => {
-            console.log("SUCCESS!");
-            toast.success("Your Application Successfully Submitted");
-            setSuccessMessage("Thank you for your interest in the VPRS Hoops Academy Foundation Free Summer Camp! We look forward to welcoming you to our camp and sharing our love for basketball with you. If you have any questions or need further assistance, please don't hesitate to contact us.  Let's make this summer unforgettable on court!");
-          },
-          (error) => {
-            console.log("FAILED...", error.text);
-            toast.error("Please Check Your Application");
-           
-          }
-        );
-    } else {
-      toast.error("Please check all the inputs.");
-    }
-    
-
-    // Phone number validation
-    const phoneNumber = form.current.user_contact.value.trim();
-    if (phoneNumber.length !== 10 || isNaN(phoneNumber)) {
-      toast.error("Please enter a valid phone number.");
+    if (hasEmptyField) {
+      toast.error("Please complete all required fields.");
       return;
     }
 
-    const emerNumber = form.current.user_emery.value.trim();
-    if (emerNumber.length !== 10 || isNaN(phoneNumber)) {
-      toast.error("Please enter a valid Emergency contact number.");
-      return;
+    try {
+      await emailjs.sendForm(
+        "service_yxy3o2s",
+        "template_u5z7jpl",
+        form.current,
+        {
+          publicKey: "pw1QIwo54-lpt4IZe",
+        },
+      );
+      toast.success("Registration submitted successfully.");
+      setSuccessMessage(
+        "Your registration has been received. We will contact you soon with the next training details.",
+      );
+      form.current.reset();
+    } catch (error) {
+      toast.error("Unable to submit registration right now.");
+      setSuccessMessage("");
     }
-
-
-    
-
-   
-  };
+  };
 
   return (
-    <div className="bg-black ">
-      <FaArrowLeft onClick={()=>{navigate("/")}} className="text-[#ff4000] text-[35px] pt-4 ml-[10px] lg:text-[50px]"/>
-      <h1 className="text-[25px] text-[#ff4c00]  font-[700] text-center p-[20px] lg:text-[30px]">
-         SUMMER CAMP REGISTRATION
-      </h1>
+    <section className="min-h-screen bg-dark-bg px-4 py-10 sm:px-8 lg:px-16 xl:px-32">
+      <div className="mx-auto max-w-5xl">
+        <button
+          type="button"
+          onClick={() => navigate("/")}
+          className="mb-8 flex min-h-[44px] items-center gap-3 text-sm font-semibold uppercase tracking-[0.2em] text-red-400 transition hover:text-white"
+        >
+          <FaArrowLeft />
+          Back to Home
+        </button>
 
-      <div>
-      <form ref={form} onSubmit={sendEmail} >
-        {/* -------------------Participant Information----------------- */}
-
-        <h1 className="text-[20px] text-[#ff4c00] font-[700] text-start pt-[50px] pb-[20px] pl-[20px] lg:ml-[110px] lg:text-[25px]">
-          Participant Information
-        </h1>
-        <section className="flex flex-col items-center justify-center gap-8 md:grid md:grid-cols-2 md:place-items-center md:place-content-around xl:place-content-center">
-          <div>
-            <h1 className="text-white text-[20px] mb-2 lg:text-[25px]">Name</h1>
-            <input
-              type="text"
-              re
-              name="user_Namee"
-              placeholder="Enter Your Name"
-              className="p-[8px] w-[300px] text-white bg-[#232326fd] outline-none rounded-[6px] lg:p-[15px] lg:w-[400px]"
-            />
-          </div>
-          <div>
-            <h1 className="text-white text-[20px] mb-2">Age</h1>
-            <input
-            name="user_Agee"
-              type="number"
-              placeholder="Enter your age"
-              className="p-[8px] w-[300px] text-white bg-[#232326fd] outline-none rounded-[6px] lg:p-[15px] lg:w-[400px]"
-            />
-          </div>
-          <div>
-            <h1 className="text-white text-[20px] mb-2">Gender</h1>
-            <select name="user_Genderr" className="p-[8px] w-[300px] text-white bg-[#232326fd] outline-none rounded-[6px] lg:p-[15px] lg:w-[400px]">
-            <option>Select Gender</option>
-              <option>MALE</option>
-              <option>FEMALE</option>
-            </select>
-          </div>
-          <div>
-            <h1 className="text-white text-[20px] mb-2">Date of Birth</h1>
-            <input
-            name="user_Datee"
-              type="date"
-              className="p-[8px] w-[300px] text-white bg-[#232326fd] outline-none rounded-[6px] lg:p-[15px] lg:w-[400px]"
-            />
-          </div>
-          <div>
-            <h1 className="text-white text-[20px] mb-2">
-              Parent/Guardian Name
-            </h1>
-            <input
-            name="user_Parentt"
-              type="text"
-              placeholder="Enter Your Parent/Guardian Name"
-              className="p-[8px] w-[300px] text-white bg-[#232326fd] outline-none rounded-[6px] lg:p-[15px] lg:w-[400px]"
-            />
-          </div>
-          <div>
-            <h1 className="text-white text-[20px] mb-2">Contact Number</h1>
-            <input
-            name="user_contact"
-              type="number"
-              placeholder="Enter Your Number"
-              className="p-[8px] w-[300px] text-white bg-[#232326fd] outline-none rounded-[6px] lg:p-[15px] lg:w-[400px]"
-            />
-          </div>
-          <div>
-            <h1 className="text-white text-[20px] mb-2">Address</h1>
-            <textarea
-            name="user_Add"
-              type="text"
-              placeholder="Address"
-              className="p-[8px] w-[300px] text-white bg-[#232326fd] outline-none rounded-[6px] lg:p-[15px] lg:w-[400px]"
-            />
-          </div>
-          <div>
-            <h1 className="text-white text-[20px] mb-2">
-              Emergency Contact Name
-            </h1>
-            <input
-            name="user_emery"
-              type="number"
-              placeholder="Emergency Contact Name"
-              className="p-[8px] w-[300px] text-white bg-[#232326fd] outline-none rounded-[6px] lg:p-[15px] lg:w-[400px]"
-            />
-          </div>
-        </section>
-        {/* -------------------Participant Information----------------- */}
-
-        {/* -------------------Camp Preferences----------------- */}
-
-        <h1 className="text-[20px] text-[#ff4c00] font-[700] text-start pt-[50px] pb-[20px] pl-[20px] lg:ml-[110px] lg:text-[25px]">
-          Camp Preferences
-        </h1>
-        <section className="flex flex-col items-center justify-center gap-8 md:grid md:grid-cols-2 md:place-items-center md:place-content-around">
-          <div>
-            <h1 className="text-white text-[20px] mb-2">Preferred Session</h1>
-            <select name="user_session" className="p-[8px] w-[300px] text-white bg-[#232326fd] outline-none rounded-[6px] lg:p-[15px] lg:w-[400px]">
-            <option>Select Session</option>
-              <option>Morning</option>
-              <option>Evening</option>
-              <option>Both Morning / Evening</option>
-            </select>
-          </div>
-          <div>
-            <h1 className="text-white text-[20px] mb-2">T-Shirt Size</h1>
-            <select name="user_tshirt" className="p-[8px] w-[300px] text-white bg-[#232326fd] outline-none rounded-[6px] lg:p-[15px] lg:w-[400px]">
-            <option>Select Size</option>
-              <option>S</option>
-              <option>M</option>
-              <option>L</option>
-              <option>XL</option>
-            </select>
-          </div>
-          <div>
-            <p className="text-white text-[18px] font-[500] mb-2">
-              Any Medical Conditions (Please Specify)
-            </p>
-            <textarea
-            name="user_medical"
-              placeholder="Message"
-              className="p-[8px] w-[300px] text-white bg-[#232326fd] outline-none rounded-[6px] lg:p-[15px] lg:w-[400px]"
-            />
-          </div>
-        </section>
-
-        {/* -------------------Camp Preferences----------------- */}
-
-        {/* -------------------Additional Information----------------- */}
-
-        <h1 className="text-[20px] text-[#ff4c00] font-[700] text-start pt-[50px] pb-[20px] pl-[20px] lg:ml-[110px] lg:text-[25px]">
-          Additional Information
-        </h1>
-        <section className="flex flex-col items-center justify-center gap-8 md:grid md:grid-cols-2 md:place-items-center md:place-content-around">
-          <div>
-            <h1 className="text-white text-[20px] mb-2">
-              Any previous basketball experience?
-            </h1>
-            <select name="user_exp" className="p-[8px] w-[300px] text-white bg-[#232326fd] outline-none rounded-[6px] lg:p-[15px] lg:w-[400px]">
-            <option>Experience</option>
-              <option>Yes</option>
-              <option>No</option>
-            </select>
-          </div>
-          <div className="ml-[0px]">
-            <p className="text-white text-[11px] font-[500] mb-2 lg:text-[15px]">
-              What are you hoping to learn or achieve at our summer camp?
-            </p>
-            <textarea
-            name="user_last"
-              placeholder="Message"
-              className="p-[8px] w-[300px] text-white bg-[#232326fd] outline-none rounded-[6px] lg:p-[15px] lg:w-[400px] "
-            />
-          </div>
-        </section>
-        <div className="flex flex-col gap-10 items-center justify-center mt-[50px]">
-          <button className="bg-[#FF0000] hover:bg-[#ffff] hover:text-[#FF0000] text-2xl font-black rounded-[8px] text-[#ffff] w-[200px] p-[10px]">
-            <input type="submit" value="Send" />
-          </button>
-            {successMessage && <p className="text-green-500 w-[70%] text-[12px] text-justify xl:w-[50%] xl:text-[15px]">{successMessage}</p>}
-          </div>
-        </form>
-
-        {/* -------------------Additional Information----------------- */}
-
-        {/* -------------------Terms and Conditions----------------- */}
-
-        <h1 className="text-[20px] text-[#ff4c00] font-[700] text-start pt-[50px] pb-[20px] pl-[20px] lg:ml-[110px] lg:text-[25px]">
-          Terms and Conditions *
-        </h1>
-        <section className="flex flex-col items-center justify-center gap-8 md:pb-[10px]">
-          <p className="text-white text-justify px-[20px] lg:w-[80%]">
-            By submitting this registration form, I acknowledge that
-            participation in the VPRS Hoops Academy Foundation Free Summer Camp
-            is voluntary and at my own risk. I understand that the camp
-            organizers will take all necessary precautions to ensure the safety
-            and well-being of participants, but cannot be held liable for any
-            injuries or accidents that may occur during the camp. I agree to
-            abide by the rules and regulations set forth by the academy and to
-            conduct myself in a respectful and sportsmanlike manner at all
-            times.
+        <div className="mb-10 max-w-3xl">
+          <p className="section-kicker">Registrations</p>
+          <h1 className="section-title border-l-4 border-red-600 pl-4">
+            Join the next VPRS Hoops performance intake.
+          </h1>
+          <p className="section-body mt-6">
+            Share your details and preferred program. Our team will follow up
+            with the schedule, enrollment process, and onboarding plan.
           </p>
-          <p className="text-[#FF0000] text-[10px] text-center p-[10px] md:text-[10px] md:p-0">
-      
-        </p>
-       
-        
-        </section>
+        </div>
 
-        {/* -------------------Terms and Conditions----------------- */}
+        <form
+          ref={form}
+          onSubmit={submitForm}
+          className="glass-card mx-auto max-w-2xl rounded-2xl p-6 sm:p-8"
+        >
+          <div className="grid gap-4 sm:grid-cols-2">
+            <input
+              className={inputClass}
+              type="text"
+              name="full_name"
+              placeholder="Full Name"
+              required
+            />
+            <input
+              className={inputClass}
+              type="number"
+              name="age"
+              placeholder="Age"
+              required
+            />
+          </div>
+          <div className="mt-4 grid gap-4 sm:grid-cols-2">
+            <input
+              className={inputClass}
+              type="tel"
+              name="phone"
+              placeholder="Phone"
+              required
+            />
+            <input
+              className={inputClass}
+              type="email"
+              name="email"
+              placeholder="Email"
+              required
+            />
+          </div>
+          <div className="mt-4">
+            <select
+              className={inputClass}
+              name="program"
+              defaultValue=""
+              required
+            >
+              <option value="" disabled>
+                Program
+              </option>
+              <option value="foundation">Foundation Skills</option>
+              <option value="advanced">Advanced Game IQ</option>
+              <option value="elite">Elite Performance Camp</option>
+            </select>
+          </div>
+          <textarea
+            className={`${inputClass} mt-4 min-h-[160px]`}
+            name="message"
+            placeholder="Message"
+            required
+          />
+          <button
+            type="submit"
+            className="mt-4 min-h-[44px] w-full rounded-lg bg-red-700 py-3 font-semibold text-white transition-all hover:scale-[1.02] hover:bg-red-800"
+          >
+            Submit Registration
+          </button>
+          {successMessage ? (
+            <p className="mt-4 text-sm text-green-400">{successMessage}</p>
+          ) : null}
+        </form>
       </div>
-    </div>
+    </section>
   );
 }
 

@@ -1,43 +1,78 @@
-import Founderimg from "../assets/1.jpg";
+import React from "react";
+import useScrollReveal from "../useScrollReveal";
+import founderImage from "../assets/1.jpg";
+
+const founderStats = [
+  { value: "10+", label: "Years Coaching" },
+  { value: "800+", label: "Players Trained" },
+  { value: "15", label: "Championships" },
+];
+
 function Founder() {
+  const sectionRef = useScrollReveal();
+
   return (
-    <div className="flex flex-col bg-black w-[100%]" id="founder">
-      <h1
-        data-aos="fade-down-right"
-        data-aos-duration="600"
-        data-aos-easing="linear"
-        className="text-white font-[600] text-[30px] pl-[10px]  md:text-[35px] pt-[20px] lg:pl-[10px] lg:text-[45px] xl:pt-[30px]"
-      >
-        <span className="text-[#ff4c00]">O</span>UR{" "}
-        <span className="text-[#ff4c00]">F</span>OUNDER
-      </h1>
-      <div className="w-full pt-[30px] p-[10px] flex justify-around gap-[25px] items-center lg:flex-row lg:justify-around">
-        <div className="w-[65%] text-balance text-white font-[500] lg:text-[35px]">
-          <p className="text-[10px] font-bold text-justify pr-[10px] md:pl-[10px] md:text-[22px] lg:text-[25px] xl:font-[300] xl:text-[30px]">
-            Meet Nagaarjun, the visionary founder of VPRS Hoops Academy
-            Foundation. As a former Madurai Sports Development Authority Of
-            Tamilnadu (SDAT) basketball player and current student-athlete at
-            Sindhi College, Bangalore, Nagaarjun's journey from Pudukkottai to
-            Bangalore exemplifies the <span className="text-[#ff4c00]"> transformative power of basketball.</span>
-            Inspired by his own experiences and fueled by a passion for giving
-            back, Nagaarjun is dedicated to creating pathways for young athletes
-            to succeed academically, athletically, and personally.
-          </p>
-        </div>
+    <section
+      id="founder"
+      ref={sectionRef}
+      className="bg-dark-surface px-4 py-16 sm:px-8 lg:px-16 lg:py-24 xl:px-32"
+    >
+      <div className="mx-auto max-w-7xl grid gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:items-center">
         <div
-          data-aos="zoom-in-up"
-          data-aos-duration="600"
-          data-aos-easing="linear"
-          className="w-[40%] h-[190px] md:h-[380px] lg:w-[25%] lg:h-[300px] xl:h-[400px] "
+          data-reveal
+          className="relative overflow-hidden rounded-2xl border border-red-700/40 shadow-glow-red"
         >
           <img
-            src={Founderimg}
-            alt="Founder img"
-            className="w-full h-full object-cover xl:object-contain"
+            src={founderImage}
+            alt="Founder portrait"
+            className="h-[460px] w-full object-cover object-top sm:h-[560px]"
           />
+          <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent" />
+        </div>
+
+        <div>
+          <p data-reveal className="section-kicker">
+            Founder
+          </p>
+          <h2 data-reveal className="section-title">
+            Nagaarjun built VPRS Hoops to give rising players the platform every
+            athlete deserves.
+          </h2>
+          <p data-reveal className="section-body mt-6">
+            Shaped by high-level competition and community leadership, he
+            created a program centered on discipline, details, and belief. His
+            coaching model combines intense skill development with mentorship so
+            athletes grow in confidence, game IQ, and character.
+          </p>
+
+          <blockquote
+            data-reveal
+            className="mt-8 border-l-4 border-red-600 pl-4 text-lg italic leading-8 text-gray-300"
+          >
+            “Talent opens the door, but disciplined repetition and character are
+            what keep you on the floor when the game gets hard.”
+          </blockquote>
+
+          <div className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-3">
+            {founderStats.map((stat) => (
+              <div
+                key={stat.label}
+                data-reveal
+                className="glass-card rounded-2xl p-5 text-center"
+              >
+                <div className="text-3xl font-bold text-red-500">
+                  {stat.value}
+                </div>
+                <div className="mt-2 text-sm uppercase tracking-[0.18em] text-gray-300">
+                  {stat.label}
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
-    </div>
+    </section>
   );
 }
+
 export default Founder;
